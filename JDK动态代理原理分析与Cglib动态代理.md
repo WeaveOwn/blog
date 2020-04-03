@@ -104,10 +104,6 @@ helloWorld.sayHello();
 
 
 
-输出结果：
-
-![1551425578683](C:\Users\user\AppData\Roaming\Typora\typora-user-images\1551425578683.png)
-
 原理：在运行期间，通过反射机制来创建一个实现了一组给定接口的新类。就是生成一个class
 
 ### 动态生成的类
