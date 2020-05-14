@@ -99,6 +99,8 @@ mv xxx_new.frm xxx.frm
 
       缺点：无法使用前缀索引做order by 和group by 和 覆盖扫描
 
+      ps：组合索引中最好的是把选择性高的列放在前面
+
    3. 聚簇索引
 
          1. 一张表只会存在一个聚簇索引
@@ -117,14 +119,16 @@ mv xxx_new.frm xxx.frm
 
    4. 覆盖索引
 
-      1. 覆盖索引必须要存储索引列的值
-      2. 一个被索引覆盖的查询（索引覆盖查询）在EXPLAIN的Extra列可以看到`Usering index`信息
+      ​	解释：当一张表有多列索引，查询时只查询其有的索引列的查询可以用到覆盖索引。只需取B+TREE上保存的值
+
+         1. 覆盖索引必须要存储索引列的值
+         2. 一个被索引覆盖的查询（索引覆盖查询）在EXPLAIN的Extra列可以看到`Usering index`信息
 
    5. 使用索引扫描来排序
 
       1. 文件排序`use filesort`
-      2. 第一列提供常量条件，使用第二列进行排序，这样两列组合在一起就形成了索引的最左前缀
-      3. **组合索引有列是范围条件时，无法使用索引其余列进行索引扫描排序**
+      2. order by 可以不满足最左前缀的要求，因为它可以将第一列提供常量条件，使用第二列进行排序，这样两列组合在一起就形成了索引的最左前缀；如：索引列为(A,B,C):select other from table where A='常量值' order by B,C
+      3. **组合索引有列是范围条件时，无法使用索引其余列进行索引扫描排序** **select other from table where A>'常量值' order by B,C.但是 select other from table where A>'常量值' order by A,B是可以的**
       4. 使用join有可能由于优化问题造成join左边的表被当做关联的第二张表导致无法使用左边表的所有进行排序
 
    6. 二级索引
