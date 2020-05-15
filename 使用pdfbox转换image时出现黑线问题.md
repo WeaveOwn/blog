@@ -13,6 +13,8 @@ tags: [java, 错误收集]
 
 ![image-20200515171600409](images/image-20200515171600409.png)
 
+<!-- more -->
+
 使用jar包如下: 
 
 ```xml
