@@ -13,3 +13,55 @@
 8. **坚决不要给每个get方法编写一个set方法，除非有很好的理由让类变为可变类，否则他就应该为不可变的。不可变的唯一缺点就是可能会出现性能问题** 
 9. **除非有让人信服的理由要让域变成非final的，否则要是每个域都是private final的**
 10. 如果类不能被做成不可变的，仍然应该限制他的可变性。 
+
+
+
+
+
+第32条需要重新看。
+
+
+
+##  专业术语
+
+1. 域：字段
+
+2. 样板代码： 不同类型的实现在一个类但却有着两种不同的实现方式。
+
+3. 标签类： enum中实现不同的类型的逻辑
+
+4. 静态成员类：可以在外围实例之外单独存在
+
+5. 非静态成员类的弊端：在没有外围实例的情况下，不可能被创建；每个实例都会包含一个额外的指向外围对象的引用。**保存这份引用要消耗时间和空间且会导致当外围类实例符合垃圾回收时却仍然可以保留。由此可能导致内存泄露。而且常常难以发现，因为这个引用是不可见得的**
+
+6. PECS：泛型->参数化类型表示一个生产者用`<? extends T>,表示一个消费者用<? super T>`；所有的comparable和compartor都是消费者`<? extends Comparable<? super T>>`
+
+7. 容器参数化：Set<T> ,Map<K,V>等的用法就是参数化了这些容器；
+
+8. 键参数化：通过将类型参数放在键上而不是容器上可以避开容器只能有固定的类型参数的限制。而且该方式是类型安全的异构容器，可以用Class对象作为键，这种方式叫做类型令牌。也可以使用定制的键类型。如：一个DatabaseRow类型表示一个数据库行容器，用Column<T>作为他的键
+
+   ```
+   Public class Favorites {
+   	private Map<Class<?>, Object> favorites = new HashMap<>();
+   	
+   	public <T> void putFavorite(Class<T> type, T instance) {
+   		favorites.put(Objects.requireNonNull(type), type.cast(instance);
+   	}
+   	
+   	public <T> T getFavorite(Class<T> type) {
+   		 return type.cast(favorites.get(type));
+   	}
+   }
+   ```
+
+9. int 枚举模式：通常是一组int常量来表示枚举类型，每个int常量代表一个成员
+
+   ```java
+   public static final int APPLE1 = 1;
+   public static final int APPLE1 = 2;
+   public static final int APPLE1 = 3;
+   ```
+
+10. 位域：用OR 运算符将几个常量合并到一个集合中，称作位域
+
+11. 使用TheardLocalRandom

@@ -431,3 +431,4 @@ jvisualvm
 #### 原生内存跟踪
 
 1. `-XX:NativeMemoryTracking=off|summary|detail`默认off。如果开启使用：`jcmd pid VM.native_memory summary scale=MB`获取信息
+
